@@ -1,0 +1,167 @@
+---
+swagger: "2.0"
+info:
+  description: "SOP Accelerator API"
+  version: "1.0.0"
+  title: "SOP Accelerator API"
+basePath: "/"
+schemes:
+- "http"
+produces:
+- "application/json"
+paths:
+  /sopa/{version}/hello:
+    get:
+      tags:
+      - "Hello World"
+      summary: "Hello World Endpoint"
+      description: "Simple GET Operation that returns a JSON message with a simple\
+        \ payload.\n"
+      operationId: "sayHello"
+      parameters:
+      - name: "version"
+        in: "path"
+        description: "API Version"
+        required: true
+        type: "string"
+      - name: "X-WP-Diagnostic-CorrelationId"
+        in: "header"
+        description: "Correlation ID to trace the initial request"
+        required: true
+        type: "string"
+      - name: "X-WP-Diagnostics-CallerId"
+        in: "header"
+        description: "X-WP-Diagnostics-CallerId"
+        required: true
+        type: "string"
+      - name: "X-WP-Timestamp"
+        in: "header"
+        description: "X-WP-Timestamp"
+        required: true
+        type: "string"
+      - name: "X-WP-Jwt"
+        in: "header"
+        description: "The name of the header containing the JWT token which holds a set of entitlements or ‘claims’ associated with the authenticated Subject."
+        required: true
+        type: "string"
+      - name: "responseType"
+        in: "query"
+        description: "Response Type"
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "Hello World!"
+          schema:
+            $ref: "#/definitions/ServiceResponse"
+          headers:
+            X-WP-Diagnostic-CorrelationId:
+              type: "string"
+              description: "Unique ID to trace the initial request"
+        400:
+          description: "Request validation error (one of the header is missing or\
+            \ empty or the 'responseType' query parameter value is 'error') or REST\
+            \ versioning validation (invalid version value, a request field is missing\
+            \ in request or is not permited by selected version, the version header\
+            \ is missing or is duplicated)."
+          schema:
+            $ref: "#/definitions/Error"
+          headers:
+            X-WP-Diagnostic-CorrelationId:
+              type: "string"
+              description: "Unique ID to trace the initial request"
+        404:
+          description: "Rest versioning validation failed with the following possible\
+            \ scenarios(operation not supported by server version or the version supplied\
+            \ is not supported by server)."
+          schema:
+            $ref: "#/definitions/Error"
+        500:
+          description: "The 'responseType' query parameter is different than 'success'/\
+            \ 'error' values or inexistent environment variable in the system."
+          schema:
+            $ref: "#/definitions/Error"
+          headers:
+            X-WP-Diagnostic-CorrelationId:
+              type: "string"
+              description: "Unique ID to trace the initial request"
+definitions:
+  ServiceResponse:
+    type: "object"
+    required:
+    - "additionalMessage"
+    - "message"
+    properties:
+      message:
+        type: "string"
+        description: "Simple response message."
+        default: "Hello World!"
+      additionalMessage:
+        type: "string"
+        description: "Second message returned in the response payload to differentiate\
+          \ between versioned fields."
+    description: "Custom response object for the SOP Accelerator project."
+  Error:
+    required:
+    - "customCode"
+    - "httpStatusCode"
+    - "message"
+    properties:
+      httpStatusCode:
+        type: "integer"
+        description: "HTTP Status code for error"
+        minimum: 100
+        maximum: 599
+      customCode:
+        type: "string"
+        description: "Application specific error code"
+      message:
+        type: "string"
+        description: "Short message describing cause of error"
+      description:
+        type: "string"
+        description: "Details error description"
+      errorHelpUrl:
+        type: "string"
+        description: "URL to page containing rich error description and resolution\
+          \ examples"
+      moreInfo:
+        type: "string"
+        description: "More details describing error"
+parameters:
+  version:
+    name: "version"
+    in: "path"
+    description: "API Version"
+    required: true
+    type: "string"
+  correlation-id:
+    name: "X-WP-Diagnostic-CorrelationId"
+    in: "header"
+    description: "Correlation ID to trace the initial request"
+    required: true
+    type: "string"
+  caller-id:
+    name: "X-WP-Diagnostics-CallerId"
+    in: "header"
+    description: "X-WP-Diagnostics-CallerId"
+    required: true
+    type: "string"
+  timestamp:
+    name: "X-WP-Timestamp"
+    in: "header"
+    description: "X-WP-Timestamp"
+    required: true
+    type: "string"
+  jwt:
+    name: "X-WP-Jwt"
+    in: "header"
+    description: "The name of the header containing the JWT token which holds a set of entitlements or ‘claims’ associated with the authenticated Subject."
+    required: true
+    type: "string"
+  response-type:
+    name: "responseType"
+    in: "query"
+    description: "Response Type"
+    required: true
+    type: "string"

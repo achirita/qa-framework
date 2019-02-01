@@ -1,0 +1,6 @@
+{
+  "modelPackage": "com.achirita",
+  "apiPackage": "com.achirita",
+  "invokerPackage": "com.achirita",
+  "dateLibrary": "java8"
+}

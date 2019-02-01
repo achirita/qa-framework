@@ -1,0 +1,6 @@
+{
+  "modelPackage": "com.worldpay.sop.accelerator.model",
+  "apiPackage": "com.worldpay.sop.accelerator.api",
+  "invokerPackage": "com.worldpay.sop.accelerator",
+  "dateLibrary": "java8"
+}
